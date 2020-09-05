@@ -1,0 +1,19 @@
+
+		document.getElementById("Run").addEventListener('click', function() {
+		var xhr = new XMLHttpRequest();
+		var id = document.getElementById("appsid").value; // Read page source in Json Format
+		xhr.open("GET", "http://localhost/data/datalist.php?id="+id, true);  //Mention your database query file here
+		xhr.overrideMimeType("text/plain; charset=x-user-defined");
+		xhr.onreadystatechange = function() {
+			if (xhr.readyState == 4) {
+				var xhrjson = JSON.parse(xhr.responseText, (key, value) =>
+	  		typeof value === 'number'
+	    	? value * 2 // return value * 2 for numbers
+	    	: value     // return everything else unchanged
+				);
+				/* Replace the below mentioned field id's with that of your form */
+				chrome.tabs.executeScript(null,{code:"document.getElementById('id').value ='"+xhrjson['id']+"'"});
+			}
+		}
+		xhr.send();
+	});
